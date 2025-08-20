@@ -8,13 +8,18 @@
         <div class="external-links-group">
           <button @click="showAppHomeDialog = true" class="btn app-home-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
             </svg>
             App主页
           </button>
-          <button @click="showPluginHomeDialog = true" class="btn plugin-home-btn">
+          <button
+            @click="showPluginHomeDialog = true"
+            class="btn plugin-home-btn"
+          >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-2 .9-2 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+              <path
+                d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-2 .9-2 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"
+              />
             </svg>
             插件主页
           </button>
@@ -24,13 +29,17 @@
         <!-- Feature buttons -->
         <button @click="showBookmarkManager = true" class="btn secondary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+            <path
+              d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"
+            />
           </svg>
           书签管理
         </button>
         <button @click="showTokenList = true" class="btn primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+            <path
+              d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"
+            />
           </svg>
           已保存Token
         </button>
@@ -66,17 +75,35 @@
                   readonly
                   ref="authUrlInput"
                   placeholder="点击上方按钮生成授权URL"
+                />
+                <button
+                  @click="copyAuthUrl"
+                  class="copy-icon-btn"
+                  title="复制URL"
                 >
-                <button @click="copyAuthUrl" class="copy-icon-btn" title="复制URL">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                    />
                   </svg>
                 </button>
               </div>
               <div class="button-container">
                 <button @click="showAuthUrlDialog = true" class="btn secondary">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+                    />
                   </svg>
                   打开授权URL
                 </button>
@@ -115,8 +142,10 @@
                     :value="tokenResult.access_token"
                     readonly
                     ref="accessTokenInput"
-                  >
-                  <button @click="copyAccessToken" class="btn secondary">复制</button>
+                  />
+                  <button @click="copyAccessToken" class="btn secondary">
+                    复制
+                  </button>
                 </div>
               </div>
               <div class="result-container">
@@ -127,8 +156,43 @@
                     :value="tokenResult.tenant_url"
                     readonly
                     ref="tenantUrlInput"
+                  />
+                  <button @click="copyTenantUrl" class="btn secondary">
+                    复制
+                  </button>
+                </div>
+              </div>
+
+              <!-- Account URL Section -->
+              <div class="result-container">
+                <label>个人账号地址:</label>
+                <div class="token-container">
+                  <input
+                    type="text"
+                    value="https://app.augmentcode.com/account"
+                    readonly
+                    ref="accountUrlInput"
+                  />
+                  <button @click="copyAccountUrl" class="btn secondary">
+                    复制
+                  </button>
+                  <button
+                    @click="openAccountUrl"
+                    class="btn primary"
+                    title="在浏览器中打开个人账号"
                   >
-                  <button @click="copyTenantUrl" class="btn secondary">复制</button>
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+                      />
+                    </svg>
+                    访问账号
+                  </button>
                 </div>
               </div>
 
@@ -141,7 +205,7 @@
                     v-model="portalUrl"
                     placeholder="请输入 Portal 地址（可选）"
                     class="field-input"
-                  >
+                  />
                 </div>
                 <div class="field-container">
                   <label>邮箱备注:</label>
@@ -150,18 +214,18 @@
                     v-model="emailNote"
                     placeholder="请输入邮箱相关备注（可选）"
                     class="field-input"
-                  >
+                  />
                 </div>
               </div>
 
               <div class="button-container">
-                <button @click="saveToken" class="btn success">保存Token</button>
+                <button @click="saveToken" class="btn success">
+                  保存Token
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
     </main>
 
@@ -194,31 +258,43 @@
     />
 
     <!-- Portal打开方式选择对话框 -->
-    <div v-if="showPortalDialog" class="portal-dialog-overlay" @click="showPortalDialog = false">
+    <div
+      v-if="showPortalDialog"
+      class="portal-dialog-overlay"
+      @click="showPortalDialog = false"
+    >
       <div class="portal-dialog" @click.stop>
         <h3>选择打开方式</h3>
         <div class="dialog-buttons">
           <button @click="copyPortalUrl" class="dialog-btn copy">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+              <path
+                d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+              />
             </svg>
             复制链接
           </button>
           <button @click="openPortalExternal" class="dialog-btn external">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+              <path
+                d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+              />
             </svg>
             外部打开
           </button>
           <button @click="openPortalInternal" class="dialog-btn internal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
             </svg>
             内置打开
           </button>
           <button @click="showPortalDialog = false" class="dialog-btn cancel">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
             </svg>
             不打开
           </button>
@@ -226,30 +302,34 @@
       </div>
     </div>
     <!-- 删除确认对话框 -->
-    <div v-if="showDeleteConfirm" class="portal-dialog-overlay" @click="cancelDelete">
+    <div
+      v-if="showDeleteConfirm"
+      class="portal-dialog-overlay"
+      @click="cancelDelete"
+    >
       <div class="portal-dialog delete-confirm" @click.stop>
         <h3>确认删除</h3>
         <p>确定要删除这个Token吗？此操作无法撤销。</p>
         <div class="dialog-buttons">
           <button @click="cancelDelete" class="dialog-btn cancel">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
             </svg>
             取消
           </button>
           <button @click="confirmDelete" class="dialog-btn delete">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              <path
+                d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+              />
             </svg>
             删除
           </button>
         </div>
       </div>
     </div>
-
-
-
-
 
     <!-- Bookmark Manager Modal -->
     <BookmarkManager
@@ -258,33 +338,40 @@
     />
 
     <!-- Status Messages -->
-    <div
-      v-if="statusMessage"
-      :class="['status-toast', statusType]"
-    >
+    <div v-if="statusMessage" :class="['status-toast', statusType]">
       {{ statusMessage }}
     </div>
 
     <!-- 授权URL打开方式选择对话框 -->
-    <div v-if="showAuthUrlDialog" class="portal-dialog-overlay" @click="showAuthUrlDialog = false">
+    <div
+      v-if="showAuthUrlDialog"
+      class="portal-dialog-overlay"
+      @click="showAuthUrlDialog = false"
+    >
       <div class="portal-dialog" @click.stop>
         <h3>选择打开方式</h3>
         <div class="dialog-buttons">
           <button @click="openAuthUrlExternal" class="dialog-btn external">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+              <path
+                d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+              />
             </svg>
             外部打开
           </button>
           <button @click="openAuthUrlInternal" class="dialog-btn internal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
             </svg>
             内置打开
           </button>
           <button @click="showAuthUrlDialog = false" class="dialog-btn cancel">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
             </svg>
             取消
           </button>
@@ -293,25 +380,35 @@
     </div>
 
     <!-- App主页打开方式选择对话框 -->
-    <div v-if="showAppHomeDialog" class="portal-dialog-overlay" @click="showAppHomeDialog = false">
+    <div
+      v-if="showAppHomeDialog"
+      class="portal-dialog-overlay"
+      @click="showAppHomeDialog = false"
+    >
       <div class="portal-dialog" @click.stop>
         <h3>App主页 - 选择打开方式</h3>
         <div class="dialog-buttons">
           <button @click="openAppHomeExternal" class="dialog-btn external">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+              <path
+                d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+              />
             </svg>
             外部打开
           </button>
           <button @click="openAppHomeInternal" class="dialog-btn internal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
             </svg>
             内置打开
           </button>
           <button @click="showAppHomeDialog = false" class="dialog-btn cancel">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
             </svg>
             取消
           </button>
@@ -320,25 +417,38 @@
     </div>
 
     <!-- 插件主页打开方式选择对话框 -->
-    <div v-if="showPluginHomeDialog" class="portal-dialog-overlay" @click="showPluginHomeDialog = false">
+    <div
+      v-if="showPluginHomeDialog"
+      class="portal-dialog-overlay"
+      @click="showPluginHomeDialog = false"
+    >
       <div class="portal-dialog" @click.stop>
         <h3>插件主页 - 选择打开方式</h3>
         <div class="dialog-buttons">
           <button @click="openPluginHomeExternal" class="dialog-btn external">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+              <path
+                d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+              />
             </svg>
             外部打开
           </button>
           <button @click="openPluginHomeInternal" class="dialog-btn internal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+              />
             </svg>
             内置打开
           </button>
-          <button @click="showPluginHomeDialog = false" class="dialog-btn cancel">
+          <button
+            @click="showPluginHomeDialog = false"
+            class="dialog-btn cancel"
+          >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <path
+                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
             </svg>
             取消
           </button>
@@ -349,222 +459,239 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { invoke } from '@tauri-apps/api/core'
-import TokenCard from './components/TokenCard.vue'
-import TokenList from './components/TokenList.vue'
-import TokenForm from './components/TokenForm.vue'
-import BookmarkManager from './components/BookmarkManager.vue'
+import { ref, onMounted, computed } from "vue";
+import { invoke } from "@tauri-apps/api/core";
+import TokenCard from "./components/TokenCard.vue";
+import TokenList from "./components/TokenList.vue";
+import TokenForm from "./components/TokenForm.vue";
+import BookmarkManager from "./components/BookmarkManager.vue";
 
 // 简化的状态管理
-const tokens = ref([])
-const isLoading = ref(false)
-const showTokenList = ref(false)
-const showBookmarkManager = ref(false)
-const statusMessage = ref('')
-const statusType = ref('info')
-const hasUnsavedChanges = ref(false)
+const tokens = ref([]);
+const isLoading = ref(false);
+const showTokenList = ref(false);
+const showBookmarkManager = ref(false);
+const statusMessage = ref("");
+const statusType = ref("info");
+const hasUnsavedChanges = ref(false);
 
 // 简化的工具函数
-const createNewToken = (tenantUrl, accessToken, portalUrl = null, emailNote = null) => {
+const createNewToken = (
+  tenantUrl,
+  accessToken,
+  portalUrl = null,
+  emailNote = null
+) => {
   return {
-    id: 'token_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+    id: "token_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9),
     tenant_url: tenantUrl,
     access_token: accessToken,
     created_at: new Date().toISOString(),
     portal_url: portalUrl,
     ban_status: null,
     portal_info: null,
-    email_note: emailNote
-  }
-}
+    email_note: emailNote,
+  };
+};
 
 // 移除了复杂的自动保存、错误处理和回滚机制，保持简单
 
 // Token generator data
-const authUrl = ref('')
-const authCode = ref('')
-const tokenResult = ref(null)
-const isGenerating = ref(false)
-const isGettingToken = ref(false)
-const portalUrl = ref('')
-const emailNote = ref('')
+const authUrl = ref("");
+const authCode = ref("");
+const tokenResult = ref(null);
+const isGenerating = ref(false);
+const isGettingToken = ref(false);
+const portalUrl = ref("");
+const emailNote = ref("");
 
 // Template refs
-const authUrlInput = ref(null)
-const accessTokenInput = ref(null)
-const tenantUrlInput = ref(null)
-
-
+const authUrlInput = ref(null);
+const accessTokenInput = ref(null);
+const tenantUrlInput = ref(null);
+const accountUrlInput = ref(null);
 
 // Portal dialog
-const showPortalDialog = ref(false)
-const currentPortalToken = ref(null)
+const showPortalDialog = ref(false);
+const currentPortalToken = ref(null);
 
 // Delete confirmation dialog
-const showDeleteConfirm = ref(false)
-const tokenToDelete = ref(null)
+const showDeleteConfirm = ref(false);
+const tokenToDelete = ref(null);
 
 // Auth URL dialog
-const showAuthUrlDialog = ref(false)
+const showAuthUrlDialog = ref(false);
 
 // External links dialogs
-const showAppHomeDialog = ref(false)
-const showPluginHomeDialog = ref(false)
+const showAppHomeDialog = ref(false);
+const showPluginHomeDialog = ref(false);
 
 // Token form dialog
-const showTokenFormModal = ref(false)
-const editingToken = ref(null)
+const showTokenFormModal = ref(false);
+const editingToken = ref(null);
 
 // Computed properties
 
 const canGetToken = computed(() => {
-  return authUrl.value && authCode.value.trim().length > 0
-})
+  return authUrl.value && authCode.value.trim().length > 0;
+});
 
 // Methods
-const showStatus = (message, type = 'info') => {
-  statusMessage.value = message
-  statusType.value = type
+const showStatus = (message, type = "info") => {
+  statusMessage.value = message;
+  statusType.value = type;
 
   setTimeout(() => {
-    statusMessage.value = ''
-  }, 2000)
-}
+    statusMessage.value = "";
+  }, 2000);
+};
 
 const loadTokens = async (showSuccessMessage = false) => {
-  isLoading.value = true
+  isLoading.value = true;
   try {
-    const jsonString = await invoke('load_tokens_json')
-    tokens.value = JSON.parse(jsonString)
-    hasUnsavedChanges.value = false
+    const jsonString = await invoke("load_tokens_json");
+    tokens.value = JSON.parse(jsonString);
+    hasUnsavedChanges.value = false;
     if (showSuccessMessage) {
-      showStatus('Token加载成功', 'success')
+      showStatus("Token加载成功", "success");
     }
   } catch (error) {
-    showStatus(`加载Token失败: ${error}`, 'error')
-    tokens.value = []
-    hasUnsavedChanges.value = false
+    showStatus(`加载Token失败: ${error}`, "error");
+    tokens.value = [];
+    hasUnsavedChanges.value = false;
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
-
+};
 
 const saveTokensToFile = async () => {
   try {
-    const jsonString = JSON.stringify(tokens.value, null, 2)
-    await invoke('save_tokens_json', { jsonString })
-    hasUnsavedChanges.value = false
-    showStatus('Token保存成功', 'success')
+    const jsonString = JSON.stringify(tokens.value, null, 2);
+    await invoke("save_tokens_json", { jsonString });
+    hasUnsavedChanges.value = false;
+    showStatus("Token保存成功", "success");
   } catch (error) {
-    showStatus(`保存Token失败: ${error}`, 'error')
-    throw error
+    showStatus(`保存Token失败: ${error}`, "error");
+    throw error;
   }
-}
-
+};
 
 const deleteToken = (tokenId) => {
   // 显示删除确认对话框
-  tokenToDelete.value = tokenId
-  showDeleteConfirm.value = true
-}
+  tokenToDelete.value = tokenId;
+  showDeleteConfirm.value = true;
+};
 
 const confirmDelete = async () => {
-  if (!tokenToDelete.value) return
+  if (!tokenToDelete.value) return;
 
   try {
     // 在内存中删除 token
-    tokens.value = tokens.value.filter(token => token.id !== tokenToDelete.value)
-    hasUnsavedChanges.value = true
+    tokens.value = tokens.value.filter(
+      (token) => token.id !== tokenToDelete.value
+    );
+    hasUnsavedChanges.value = true;
 
-    showStatus('Token已从内存删除，请手动保存', 'success')
+    showStatus("Token已从内存删除，请手动保存", "success");
   } catch (error) {
-    showStatus(`删除Token失败: ${error}`, 'error')
+    showStatus(`删除Token失败: ${error}`, "error");
   }
 
-  showDeleteConfirm.value = false
-  tokenToDelete.value = null
-}
-
+  showDeleteConfirm.value = false;
+  tokenToDelete.value = null;
+};
 
 const cancelDelete = () => {
-  showDeleteConfirm.value = false
-  tokenToDelete.value = null
-}
-
-
+  showDeleteConfirm.value = false;
+  tokenToDelete.value = null;
+};
 
 const onTokenSaved = () => {
-  loadTokens()
-  showStatus('新Token已保存!', 'success')
-}
+  loadTokens();
+  showStatus("新Token已保存!", "success");
+};
 
 // Token generator methods
 const copyToClipboard = async (text) => {
   try {
-    await navigator.clipboard.writeText(text)
-    return true
+    await navigator.clipboard.writeText(text);
+    return true;
   } catch (error) {
-    console.error('Failed to copy to clipboard:', error)
-    return false
+    console.error("Failed to copy to clipboard:", error);
+    return false;
   }
-}
+};
 
 const generateAuthUrl = async () => {
-  isGenerating.value = true
+  isGenerating.value = true;
 
   try {
-    const url = await invoke('generate_augment_auth_url')
-    authUrl.value = url
+    const url = await invoke("generate_augment_auth_url");
+    authUrl.value = url;
   } catch (error) {
-    showStatus(`错误: ${error}`, 'error')
+    showStatus(`错误: ${error}`, "error");
   } finally {
-    isGenerating.value = false
+    isGenerating.value = false;
   }
-}
+};
 
 const copyAuthUrl = async () => {
-  const success = await copyToClipboard(authUrl.value)
+  const success = await copyToClipboard(authUrl.value);
   showStatus(
-    success ? 'URL已复制到剪贴板!' : '复制URL失败',
-    success ? 'success' : 'error'
-  )
-}
-
-
+    success ? "URL已复制到剪贴板!" : "复制URL失败",
+    success ? "success" : "error"
+  );
+};
 
 const getAccessToken = async () => {
-  isGettingToken.value = true
-  showStatus('正在获取访问令牌...', 'info')
+  isGettingToken.value = true;
+  showStatus("正在获取访问令牌...", "info");
 
   try {
-    const result = await invoke('get_augment_token', { code: authCode.value })
-    tokenResult.value = result
-    showStatus('访问令牌获取成功!', 'success')
+    const result = await invoke("get_augment_token", { code: authCode.value });
+    tokenResult.value = result;
+    showStatus("访问令牌获取成功!", "success");
   } catch (error) {
-    showStatus(`错误: ${error}`, 'error')
+    showStatus(`错误: ${error}`, "error");
   } finally {
-    isGettingToken.value = false
+    isGettingToken.value = false;
   }
-}
+};
 
 const copyAccessToken = async () => {
-  const success = await copyToClipboard(tokenResult.value.access_token)
+  const success = await copyToClipboard(tokenResult.value.access_token);
   showStatus(
-    success ? '访问令牌已复制到剪贴板!' : '复制访问令牌失败',
-    success ? 'success' : 'error'
-  )
-}
+    success ? "访问令牌已复制到剪贴板!" : "复制访问令牌失败",
+    success ? "success" : "error"
+  );
+};
 
 const copyTenantUrl = async () => {
-  const success = await copyToClipboard(tokenResult.value.tenant_url)
+  const success = await copyToClipboard(tokenResult.value.tenant_url);
   showStatus(
-    success ? '租户URL已复制到剪贴板!' : '复制租户URL失败',
-    success ? 'success' : 'error'
-  )
-}
+    success ? "租户URL已复制到剪贴板!" : "复制租户URL失败",
+    success ? "success" : "error"
+  );
+};
 
+const copyAccountUrl = async () => {
+  const accountUrl = "https://app.augmentcode.com/account";
+  const success = await copyToClipboard(accountUrl);
+  showStatus(
+    success ? "个人账号地址已复制到剪贴板!" : "复制地址失败",
+    success ? "success" : "error"
+  );
+};
+
+const openAccountUrl = async () => {
+  const accountUrl = "https://app.augmentcode.com/account";
+  try {
+    await invoke("open_url", { url: accountUrl });
+    showStatus("正在浏览器中打开个人账号页面...", "info");
+  } catch (error) {
+    showStatus(`打开个人账号页面失败: ${error}`, "error");
+  }
+};
 
 const saveToken = async () => {
   try {
@@ -574,60 +701,60 @@ const saveToken = async () => {
       tokenResult.value.access_token,
       portalUrl.value.trim() || null,
       emailNote.value.trim() || null
-    )
+    );
 
     // 添加到内存中的 tokens 数组
-    tokens.value.push(newToken)
-    hasUnsavedChanges.value = true
+    tokens.value.push(newToken);
+    hasUnsavedChanges.value = true;
 
-    showStatus('Token已添加到内存，请手动保存', 'success')
+    showStatus("Token已添加到内存，请手动保存", "success");
 
     // Reset form
-    authUrl.value = ''
-    authCode.value = ''
-    tokenResult.value = null
-    portalUrl.value = ''
-    emailNote.value = ''
+    authUrl.value = "";
+    authCode.value = "";
+    tokenResult.value = null;
+    portalUrl.value = "";
+    emailNote.value = "";
   } catch (error) {
-    showStatus(`添加Token失败: ${error}`, 'error')
+    showStatus(`添加Token失败: ${error}`, "error");
   }
-}
+};
 
 // Token form methods
 const showTokenForm = () => {
-  editingToken.value = null
-  showTokenFormModal.value = true
-}
+  editingToken.value = null;
+  showTokenFormModal.value = true;
+};
 
 const handleEditToken = (token) => {
-  editingToken.value = token
-  showTokenFormModal.value = true
-}
+  editingToken.value = token;
+  showTokenFormModal.value = true;
+};
 
 const closeTokenForm = () => {
-  showTokenFormModal.value = false
-  editingToken.value = null
-}
+  showTokenFormModal.value = false;
+  editingToken.value = null;
+};
 
 const handleTokenFormSuccess = () => {
   // TokenForm 现在只更新内存，不需要重新加载
-  hasUnsavedChanges.value = true
-}
+  hasUnsavedChanges.value = true;
+};
 
 const handleUpdateToken = (updatedTokenData) => {
   // 在内存中更新 token
-  const index = tokens.value.findIndex(t => t.id === updatedTokenData.id)
+  const index = tokens.value.findIndex((t) => t.id === updatedTokenData.id);
   if (index !== -1) {
     tokens.value[index] = {
       ...tokens.value[index],
       tenant_url: updatedTokenData.tenantUrl,
       access_token: updatedTokenData.accessToken,
       portal_url: updatedTokenData.portalUrl,
-      email_note: updatedTokenData.emailNote
-    }
-    hasUnsavedChanges.value = true
+      email_note: updatedTokenData.emailNote,
+    };
+    hasUnsavedChanges.value = true;
   }
-}
+};
 
 const handleAddTokenFromForm = (tokenData) => {
   // 从表单添加新 token 到内存
@@ -636,12 +763,17 @@ const handleAddTokenFromForm = (tokenData) => {
     tokenData.accessToken,
     tokenData.portalUrl,
     tokenData.emailNote
-  )
-  tokens.value.push(newToken)
-  hasUnsavedChanges.value = true
-}
+  );
+  tokens.value.push(newToken);
+  hasUnsavedChanges.value = true;
+};
 
-const saveTokenManually = async (tenantUrl, accessToken, portalUrl, emailNote) => {
+const saveTokenManually = async (
+  tenantUrl,
+  accessToken,
+  portalUrl,
+  emailNote
+) => {
   try {
     // 创建新的 token 对象
     const newToken = createNewToken(
@@ -649,158 +781,154 @@ const saveTokenManually = async (tenantUrl, accessToken, portalUrl, emailNote) =
       accessToken,
       portalUrl || null,
       emailNote || null
-    )
+    );
 
     // 添加到内存中的 tokens 数组
-    tokens.value.push(newToken)
-    hasUnsavedChanges.value = true
+    tokens.value.push(newToken);
+    hasUnsavedChanges.value = true;
 
-    showStatus('Token已添加到内存，请手动保存', 'success')
-    return { success: true }
+    showStatus("Token已添加到内存，请手动保存", "success");
+    return { success: true };
   } catch (error) {
-    showStatus(`添加Token失败: ${error}`, 'error')
-    return { success: false, error }
+    showStatus(`添加Token失败: ${error}`, "error");
+    return { success: false, error };
   }
-}
+};
 
 // Portal dialog methods
 const handleOpenPortal = (token) => {
-  currentPortalToken.value = token
-  showPortalDialog.value = true
-}
+  currentPortalToken.value = token;
+  showPortalDialog.value = true;
+};
 
 const copyPortalUrl = async () => {
-  showPortalDialog.value = false
-  if (!currentPortalToken.value?.portal_url) return
+  showPortalDialog.value = false;
+  if (!currentPortalToken.value?.portal_url) return;
 
-  const success = await copyToClipboard(currentPortalToken.value.portal_url)
+  const success = await copyToClipboard(currentPortalToken.value.portal_url);
   showStatus(
-    success ? 'Portal链接已复制到剪贴板!' : '复制Portal链接失败',
-    success ? 'success' : 'error'
-  )
-}
+    success ? "Portal链接已复制到剪贴板!" : "复制Portal链接失败",
+    success ? "success" : "error"
+  );
+};
 
 const openPortalExternal = async () => {
-  showPortalDialog.value = false
-  if (!currentPortalToken.value?.portal_url) return
+  showPortalDialog.value = false;
+  if (!currentPortalToken.value?.portal_url) return;
 
   try {
-    await invoke('open_url', { url: currentPortalToken.value.portal_url })
+    await invoke("open_url", { url: currentPortalToken.value.portal_url });
   } catch (error) {
-    console.error('Failed to open portal externally:', error)
-    showStatus('打开Portal失败', 'error')
+    console.error("Failed to open portal externally:", error);
+    showStatus("打开Portal失败", "error");
   }
-}
+};
 
 const openPortalInternal = async () => {
-  showPortalDialog.value = false
-  if (!currentPortalToken.value?.portal_url) return
+  showPortalDialog.value = false;
+  if (!currentPortalToken.value?.portal_url) return;
 
   try {
-    const displayUrl = currentPortalToken.value.tenant_url.replace(/^https?:\/\//, '').replace(/\/$/, '')
-    await invoke('open_internal_browser', {
+    const displayUrl = currentPortalToken.value.tenant_url
+      .replace(/^https?:\/\//, "")
+      .replace(/\/$/, "");
+    await invoke("open_internal_browser", {
       url: currentPortalToken.value.portal_url,
-      title: 'Portal - ' + displayUrl
-    })
+      title: "Portal - " + displayUrl,
+    });
   } catch (error) {
-    console.error('Failed to open portal internally:', error)
-    showStatus('打开Portal失败', 'error')
+    console.error("Failed to open portal internally:", error);
+    showStatus("打开Portal失败", "error");
   }
-}
-
-
+};
 
 // Auth URL dialog methods
 const openAuthUrlExternal = async () => {
-  showAuthUrlDialog.value = false
-  if (!authUrl.value) return
+  showAuthUrlDialog.value = false;
+  if (!authUrl.value) return;
 
   try {
-    await invoke('open_url', { url: authUrl.value })
+    await invoke("open_url", { url: authUrl.value });
   } catch (error) {
-    console.error('Failed to open auth URL externally:', error)
-    showStatus('打开授权URL失败', 'error')
+    console.error("Failed to open auth URL externally:", error);
+    showStatus("打开授权URL失败", "error");
   }
-}
+};
 
 const openAuthUrlInternal = async () => {
-  showAuthUrlDialog.value = false
-  if (!authUrl.value) return
+  showAuthUrlDialog.value = false;
+  if (!authUrl.value) return;
 
   try {
-    await invoke('open_internal_browser', {
+    await invoke("open_internal_browser", {
       url: authUrl.value,
-      title: 'Augment OAuth 授权'
-    })
+      title: "Augment OAuth 授权",
+    });
   } catch (error) {
-    console.error('Failed to open auth URL internally:', error)
-    showStatus('打开授权URL失败', 'error')
+    console.error("Failed to open auth URL internally:", error);
+    showStatus("打开授权URL失败", "error");
   }
-}
+};
 
 // External links dialog methods
 const openAppHomeExternal = async () => {
-  showAppHomeDialog.value = false
-  const url = 'https://github.com/zhaochengcube/augment-token-mng'
+  showAppHomeDialog.value = false;
+  const url = "https://github.com/zhaochengcube/augment-token-mng";
 
   try {
-    await invoke('open_url', { url })
+    await invoke("open_url", { url });
   } catch (error) {
-    console.error('Failed to open App主页 externally:', error)
-    showStatus('打开App主页失败', 'error')
+    console.error("Failed to open App主页 externally:", error);
+    showStatus("打开App主页失败", "error");
   }
-}
+};
 
 const openAppHomeInternal = async () => {
-  showAppHomeDialog.value = false
-  const url = 'https://github.com/zhaochengcube/augment-token-mng'
+  showAppHomeDialog.value = false;
+  const url = "https://github.com/zhaochengcube/augment-token-mng";
 
   try {
-    await invoke('open_internal_browser', {
+    await invoke("open_internal_browser", {
       url,
-      title: 'App主页 - Augment Token Manager'
-    })
+      title: "App主页 - Augment Token Manager",
+    });
   } catch (error) {
-    console.error('Failed to open App主页 internally:', error)
-    showStatus('打开App主页失败', 'error')
+    console.error("Failed to open App主页 internally:", error);
+    showStatus("打开App主页失败", "error");
   }
-}
+};
 
 const openPluginHomeExternal = async () => {
-  showPluginHomeDialog.value = false
-  const url = 'https://github.com/zhaochengcube/augment-code-auto'
+  showPluginHomeDialog.value = false;
+  const url = "https://github.com/zhaochengcube/augment-code-auto";
 
   try {
-    await invoke('open_url', { url })
+    await invoke("open_url", { url });
   } catch (error) {
-    console.error('Failed to open 插件主页 externally:', error)
-    showStatus('打开插件主页失败', 'error')
+    console.error("Failed to open 插件主页 externally:", error);
+    showStatus("打开插件主页失败", "error");
   }
-}
+};
 
 const openPluginHomeInternal = async () => {
-  showPluginHomeDialog.value = false
-  const url = 'https://github.com/zhaochengcube/augment-code-auto'
+  showPluginHomeDialog.value = false;
+  const url = "https://github.com/zhaochengcube/augment-code-auto";
 
   try {
-    await invoke('open_internal_browser', {
+    await invoke("open_internal_browser", {
       url,
-      title: '插件主页 - Augment Code Auto'
-    })
+      title: "插件主页 - Augment Code Auto",
+    });
   } catch (error) {
-    console.error('Failed to open 插件主页 internally:', error)
-    showStatus('打开插件主页失败', 'error')
+    console.error("Failed to open 插件主页 internally:", error);
+    showStatus("打开插件主页失败", "error");
   }
-}
-
-
+};
 
 // Initialize
 onMounted(async () => {
-  await loadTokens()
-})
-
-
+  await loadTokens();
+});
 </script>
 
 <style scoped>
@@ -824,7 +952,8 @@ onMounted(async () => {
 }
 
 /* 确保body和html不产生滚动条 */
-html, body {
+html,
+body {
   overflow: hidden;
   height: 100%;
   margin: 0;
@@ -861,12 +990,6 @@ html, body {
   font-weight: 600;
   white-space: nowrap;
 }
-
-
-
-
-
-
 
 .header-buttons {
   display: flex;
@@ -914,8 +1037,6 @@ html, body {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
 }
-
-
 
 .main-content {
   padding: 20px 16px;
@@ -1040,8 +1161,6 @@ input[type="text"]:read-only {
 .copy-icon-btn:active {
   transform: scale(0.95);
 }
-
-
 
 /* 响应式设计 */
 @media (max-width: 768px) {
@@ -1196,8 +1315,12 @@ input[type="text"]:read-only {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .token-list {

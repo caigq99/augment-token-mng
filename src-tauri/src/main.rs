@@ -5,13 +5,16 @@ mod augment_oauth;
 mod bookmarks;
 mod http_server;
 
-use augment_oauth::{create_augment_oauth_state, generate_augment_authorize_url, complete_augment_oauth_flow, check_account_ban_status, AugmentOAuthState, AugmentTokenResponse, AccountStatus};
-use bookmarks::{BookmarkManager, Bookmark};
-use http_server::HttpServer;
-use std::sync::Mutex;
-use std::path::PathBuf;
-use tauri::{State, Manager, WebviewWindowBuilder, WebviewUrl};
+use augment_oauth::{
+    AccountStatus, AugmentOAuthState, AugmentTokenResponse, check_account_ban_status,
+    complete_augment_oauth_flow, create_augment_oauth_state, generate_augment_authorize_url,
+};
+use bookmarks::{Bookmark, BookmarkManager};
 use chrono;
+use http_server::HttpServer;
+use std::path::PathBuf;
+use std::sync::Mutex;
+use tauri::{Manager, State, WebviewUrl, WebviewWindowBuilder};
 
 // Global state to store OAuth state
 struct AppState {
@@ -24,10 +27,10 @@ async fn generate_auth_url(state: State<'_, AppState>) -> Result<String, String>
     let augment_oauth_state = create_augment_oauth_state();
     let auth_url = generate_augment_authorize_url(&augment_oauth_state)
         .map_err(|e| format!("Failed to generate auth URL: {}", e))?;
-    
+
     // Store the Augment OAuth state
     *state.augment_oauth_state.lock().unwrap() = Some(augment_oauth_state);
-    
+
     Ok(auth_url)
 }
 
@@ -36,20 +39,22 @@ async fn generate_augment_auth_url(state: State<'_, AppState>) -> Result<String,
     let augment_oauth_state = create_augment_oauth_state();
     let auth_url = generate_augment_authorize_url(&augment_oauth_state)
         .map_err(|e| format!("Failed to generate Augment auth URL: {}", e))?;
-    
+
     // Store the Augment OAuth state
     *state.augment_oauth_state.lock().unwrap() = Some(augment_oauth_state);
-    
+
     Ok(auth_url)
 }
 
-
-
 #[tauri::command]
-async fn get_token(code: String, state: State<'_, AppState>) -> Result<AugmentTokenResponse, String> {
+async fn get_token(
+    code: String,
+    state: State<'_, AppState>,
+) -> Result<AugmentTokenResponse, String> {
     let augment_oauth_state = {
         let guard = state.augment_oauth_state.lock().unwrap();
-        guard.clone()
+        guard
+            .clone()
             .ok_or("No Augment OAuth state found. Please generate auth URL first.")?
     };
 
@@ -59,10 +64,14 @@ async fn get_token(code: String, state: State<'_, AppState>) -> Result<AugmentTo
 }
 
 #[tauri::command]
-async fn get_augment_token(code: String, state: State<'_, AppState>) -> Result<AugmentTokenResponse, String> {
+async fn get_augment_token(
+    code: String,
+    state: State<'_, AppState>,
+) -> Result<AugmentTokenResponse, String> {
     let augment_oauth_state = {
         let guard = state.augment_oauth_state.lock().unwrap();
-        guard.clone()
+        guard
+            .clone()
             .ok_or("No Augment OAuth state found. Please generate auth URL first.")?
     };
 
@@ -81,7 +90,8 @@ async fn check_account_status(token: String, tenant_url: String) -> Result<Accou
 #[tauri::command]
 async fn open_url(app: tauri::AppHandle, url: String) -> Result<(), String> {
     use tauri_plugin_opener::OpenerExt;
-    app.opener().open_url(url, None::<&str>)
+    app.opener()
+        .open_url(url, None::<&str>)
         .map_err(|e| format!("Failed to open URL: {}", e))
 }
 
@@ -112,10 +122,12 @@ async fn save_tokens_json(json_string: String, app: tauri::AppHandle) -> Result<
         let mut temp_file = fs::File::create(&temp_path)
             .map_err(|e| format!("Failed to create temp file: {}", e))?;
 
-        temp_file.write_all(json_string.as_bytes())
+        temp_file
+            .write_all(json_string.as_bytes())
             .map_err(|e| format!("Failed to write temp file: {}", e))?;
 
-        temp_file.sync_all()
+        temp_file
+            .sync_all()
             .map_err(|e| format!("Failed to sync temp file: {}", e))?;
     }
 
@@ -125,7 +137,6 @@ async fn save_tokens_json(json_string: String, app: tauri::AppHandle) -> Result<
 
     Ok(())
 }
-
 
 #[tauri::command]
 async fn load_tokens_json(app: tauri::AppHandle) -> Result<String, String> {
@@ -269,8 +280,6 @@ fn process_token_content(content: String) -> Result<String, String> {
     }
 }
 
-
-
 // Bookmark management commands
 #[tauri::command]
 async fn add_bookmark(
@@ -283,7 +292,8 @@ async fn add_bookmark(
     let bookmark_manager = BookmarkManager::new(&app)
         .map_err(|e| format!("Failed to initialize bookmark manager: {}", e))?;
 
-    bookmark_manager.add_bookmark(name, url, description, category)
+    bookmark_manager
+        .add_bookmark(name, url, description, category)
         .map_err(|e| format!("Failed to add bookmark: {}", e))
 }
 
@@ -298,63 +308,53 @@ async fn update_bookmark(
     let bookmark_manager = BookmarkManager::new(&app)
         .map_err(|e| format!("Failed to initialize bookmark manager: {}", e))?;
 
-    bookmark_manager.update_bookmark(&id, name, url, description)
+    bookmark_manager
+        .update_bookmark(&id, name, url, description)
         .map_err(|e| format!("Failed to update bookmark: {}", e))
 }
 
 #[tauri::command]
-async fn delete_bookmark(
-    id: String,
-    app: tauri::AppHandle,
-) -> Result<bool, String> {
+async fn delete_bookmark(id: String, app: tauri::AppHandle) -> Result<bool, String> {
     let bookmark_manager = BookmarkManager::new(&app)
         .map_err(|e| format!("Failed to initialize bookmark manager: {}", e))?;
 
-    bookmark_manager.remove_bookmark(&id)
+    bookmark_manager
+        .remove_bookmark(&id)
         .map_err(|e| format!("Failed to delete bookmark: {}", e))
 }
 
 #[tauri::command]
-async fn get_bookmarks(
-    category: String,
-    app: tauri::AppHandle,
-) -> Result<Vec<Bookmark>, String> {
+async fn get_bookmarks(category: String, app: tauri::AppHandle) -> Result<Vec<Bookmark>, String> {
     let bookmark_manager = BookmarkManager::new(&app)
         .map_err(|e| format!("Failed to initialize bookmark manager: {}", e))?;
 
-    bookmark_manager.get_bookmarks_by_category(&category)
+    bookmark_manager
+        .get_bookmarks_by_category(&category)
         .map_err(|e| format!("Failed to get bookmarks: {}", e))
 }
 
 #[tauri::command]
-async fn get_all_bookmarks(
-    app: tauri::AppHandle,
-) -> Result<Vec<Bookmark>, String> {
+async fn get_all_bookmarks(app: tauri::AppHandle) -> Result<Vec<Bookmark>, String> {
     let bookmark_manager = BookmarkManager::new(&app)
         .map_err(|e| format!("Failed to initialize bookmark manager: {}", e))?;
 
-    bookmark_manager.get_all_bookmarks()
+    bookmark_manager
+        .get_all_bookmarks()
         .map_err(|e| format!("Failed to get all bookmarks: {}", e))
 }
-
-
-
-
-
-
 
 #[tauri::command]
 async fn open_internal_browser(
     app: tauri::AppHandle,
     url: String,
-    title: Option<String>
+    title: Option<String>,
 ) -> Result<String, String> {
     let window_label = format!("browser_{}", chrono::Utc::now().timestamp());
 
     let _window = WebviewWindowBuilder::new(
         &app,
         &window_label,
-        WebviewUrl::External(url.parse().map_err(|e| format!("Invalid URL: {}", e))?)
+        WebviewUrl::External(url.parse().map_err(|e| format!("Invalid URL: {}", e))?),
     )
     .title(&title.unwrap_or_else(|| "内置浏览器".to_string()))
     .inner_size(1000.0, 700.0)
@@ -369,14 +369,19 @@ async fn open_internal_browser(
 #[tauri::command]
 async fn close_window(app: tauri::AppHandle, window_label: String) -> Result<(), String> {
     if let Some(window) = app.get_webview_window(&window_label) {
-        window.close().map_err(|e| format!("Failed to close window: {}", e))?;
+        window
+            .close()
+            .map_err(|e| format!("Failed to close window: {}", e))?;
     }
     Ok(())
 }
 
 #[tauri::command]
 async fn get_customer_info(token: String) -> Result<String, String> {
-    let url = format!("https://portal.withorb.com/api/v1/customer_from_link?token={}", token);
+    let url = format!(
+        "https://portal.withorb.com/api/v1/customer_from_link?token={}",
+        token
+    );
 
     let client = reqwest::Client::new();
     let response = client
@@ -404,12 +409,10 @@ async fn get_customer_info(token: String) -> Result<String, String> {
         let response_text = String::from_utf8_lossy(&bytes).to_string();
 
         match serde_json::from_str::<serde_json::Value>(&response_text) {
-            Ok(json_value) => {
-                match serde_json::to_string_pretty(&json_value) {
-                    Ok(formatted) => Ok(formatted),
-                    Err(_) => Ok(response_text),
-                }
-            }
+            Ok(json_value) => match serde_json::to_string_pretty(&json_value) {
+                Ok(formatted) => Ok(formatted),
+                Err(_) => Ok(response_text),
+            },
             Err(_) => Ok(response_text),
         }
     } else {
@@ -417,14 +420,23 @@ async fn get_customer_info(token: String) -> Result<String, String> {
             .text()
             .await
             .map_err(|e| format!("Failed to read response: {}", e))?;
-        Err(format!("API request failed with status {}: {}", status, response_text))
+        Err(format!(
+            "API request failed with status {}: {}",
+            status, response_text
+        ))
     }
 }
 
 #[tauri::command]
-async fn get_ledger_summary(customer_id: String, pricing_unit_id: String, token: String) -> Result<String, String> {
-    let url = format!("https://portal.withorb.com/api/v1/customers/{}/ledger_summary?pricing_unit_id={}&token={}",
-                     customer_id, pricing_unit_id, token);
+async fn get_ledger_summary(
+    customer_id: String,
+    pricing_unit_id: String,
+    token: String,
+) -> Result<String, String> {
+    let url = format!(
+        "https://portal.withorb.com/api/v1/customers/{}/ledger_summary?pricing_unit_id={}&token={}",
+        customer_id, pricing_unit_id, token
+    );
 
     let client = reqwest::Client::new();
     let response = client
@@ -452,12 +464,10 @@ async fn get_ledger_summary(customer_id: String, pricing_unit_id: String, token:
         let response_text = String::from_utf8_lossy(&bytes).to_string();
 
         match serde_json::from_str::<serde_json::Value>(&response_text) {
-            Ok(json_value) => {
-                match serde_json::to_string_pretty(&json_value) {
-                    Ok(formatted) => Ok(formatted),
-                    Err(_) => Ok(response_text),
-                }
-            }
+            Ok(json_value) => match serde_json::to_string_pretty(&json_value) {
+                Ok(formatted) => Ok(formatted),
+                Err(_) => Ok(response_text),
+            },
             Err(_) => Ok(response_text),
         }
     } else {
@@ -465,7 +475,10 @@ async fn get_ledger_summary(customer_id: String, pricing_unit_id: String, token:
             .text()
             .await
             .map_err(|e| format!("Failed to read response: {}", e))?;
-        Err(format!("API request failed with status {}: {}", status, response_text))
+        Err(format!(
+            "API request failed with status {}: {}",
+            status, response_text
+        ))
     }
 }
 
@@ -516,14 +529,15 @@ async fn test_api_call() -> Result<String, String> {
             .text()
             .await
             .map_err(|e| format!("Failed to read response: {}", e))?;
-        Err(format!("API request failed with status {}: {}", status, response_text))
+        Err(format!(
+            "API request failed with status {}: {}",
+            status, response_text
+        ))
     }
 }
 
 #[tauri::command]
-async fn open_data_folder(
-    app: tauri::AppHandle,
-) -> Result<(), String> {
+async fn open_data_folder(app: tauri::AppHandle) -> Result<(), String> {
     let app_data_dir = app
         .path()
         .app_data_dir()
@@ -566,8 +580,8 @@ async fn create_jetbrains_token_file(
     editor_type: String,
     token_data: String,
 ) -> Result<String, String> {
-    use std::fs;
     use std::env;
+    use std::fs;
     use std::path::PathBuf;
 
     // 获取用户主目录
@@ -586,8 +600,7 @@ async fn create_jetbrains_token_file(
     let file_path = augment_dir.join(&file_name);
 
     // 写入文件
-    fs::write(&file_path, token_data)
-        .map_err(|e| format!("Failed to write token file: {}", e))?;
+    fs::write(&file_path, token_data).map_err(|e| format!("Failed to write token file: {}", e))?;
 
     Ok(file_path.to_string_lossy().to_string())
 }
@@ -598,9 +611,10 @@ async fn open_editor_with_protocol(
     protocol_url: String,
 ) -> Result<(), String> {
     println!("Opening editor with protocol URL: {}", protocol_url);
-    
+
     use tauri_plugin_opener::OpenerExt;
-    app.opener().open_url(protocol_url, None::<&str>)
+    app.opener()
+        .open_url(protocol_url, None::<&str>)
         .map_err(|e| format!("Failed to open editor with protocol: {}", e))
 }
 
@@ -639,7 +653,6 @@ fn main() {
             open_data_folder,
             open_editor_with_protocol,
             create_jetbrains_token_file,
-
             open_internal_browser,
             close_window
         ])

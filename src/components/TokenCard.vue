@@ -1,14 +1,29 @@
 <template>
   <div class="token-card">
     <!-- 状态指示器 -->
-    <div v-if="(token.portal_url && portalInfo.data) || token.ban_status" class="status-indicator">
+    <div
+      v-if="(token.portal_url && portalInfo.data) || token.ban_status"
+      class="status-indicator"
+    >
       <!-- 账号状态优先显示 -->
-      <span v-if="token.ban_status" :class="['status-badge', token.ban_status === 'SUSPENDED' ? 'banned' : 'active']">
-        {{ token.ban_status === 'SUSPENDED' ? '已封禁' : '正常' }}
+      <span
+        v-if="token.ban_status"
+        :class="[
+          'status-badge',
+          token.ban_status === 'SUSPENDED' ? 'banned' : 'active',
+        ]"
+      >
+        {{ token.ban_status === "SUSPENDED" ? "已封禁" : "正常" }}
       </span>
       <!-- Portal状态作为备选 -->
-      <span v-else-if="token.portal_url && portalInfo.data" :class="['status-badge', portalInfo.data.is_active ? 'active' : 'inactive']">
-        {{ portalInfo.data.is_active ? '正常' : '失效' }}
+      <span
+        v-else-if="token.portal_url && portalInfo.data"
+        :class="[
+          'status-badge',
+          portalInfo.data.is_active ? 'active' : 'inactive',
+        ]"
+      >
+        {{ portalInfo.data.is_active ? "正常" : "失效" }}
       </span>
     </div>
 
@@ -26,14 +41,33 @@
                 @mouseleave="handleEmailMouseLeave"
                 :title="isEmailHovered ? '' : token.email_note"
               >
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="email-icon">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="email-icon"
+                >
+                  <path
+                    d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                  />
                 </svg>
                 {{ isEmailHovered ? token.email_note : maskedEmail }}
               </span>
-              <button @click="copyEmailNote" class="copy-email-btn" title="复制邮箱备注">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+              <button
+                @click="copyEmailNote"
+                class="copy-email-btn"
+                title="复制邮箱备注"
+              >
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                  />
                 </svg>
               </button>
             </div>
@@ -43,11 +77,20 @@
             <div class="meta-row portal-row">
               <!-- 优先显示Portal数据，无论是来自本地缓存还是网络请求 -->
               <template v-if="portalInfo.data">
-                <span v-if="portalInfo.data.expiry_date" class="portal-meta expiry">过期: {{ formatExpiryDate(portalInfo.data.expiry_date) }}</span>
-                <span class="portal-meta balance">剩余: {{ portalInfo.data.credits_balance }}</span>
+                <span
+                  v-if="portalInfo.data.expiry_date"
+                  class="portal-meta expiry"
+                  >过期:
+                  {{ formatExpiryDate(portalInfo.data.expiry_date) }}</span
+                >
+                <span class="portal-meta balance"
+                  >剩余: {{ portalInfo.data.credits_balance }}</span
+                >
               </template>
               <!-- 如果没有数据且正在加载，显示加载状态 -->
-              <span v-else-if="isLoadingPortalInfo" class="portal-meta loading">加载中...</span>
+              <span v-else-if="isLoadingPortalInfo" class="portal-meta loading"
+                >加载中...</span
+              >
               <!-- 不显示错误信息，静默处理所有错误 -->
             </div>
           </template>
@@ -55,38 +98,83 @@
       </div>
 
       <div class="actions">
-        <button @click="openEditorModal" class="btn-action vscode" title="选择编辑器">
-          <img :src="editorIcons.vscode" alt="选择编辑器" width="18" height="18" />
+        <button
+          @click="openEditorModal"
+          class="btn-action vscode"
+          title="选择编辑器"
+        >
+          <img
+            :src="editorIcons.vscode"
+            alt="选择编辑器"
+            width="18"
+            height="18"
+          />
         </button>
         <button @click="copyToken" class="btn-action" title="复制Token">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            <path
+              d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+            />
           </svg>
         </button>
         <button @click="copyTenantUrl" class="btn-action" title="复制租户URL">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+            <path
+              d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"
+            />
           </svg>
         </button>
-        <button @click="checkAccountStatus" :class="['btn-action', 'status-check', { loading: isCheckingStatus }]" :disabled="isCheckingStatus" title="检测账号状态">
-          <svg v-if="!isCheckingStatus" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+        <button
+          @click="checkAccountStatus"
+          :class="['btn-action', 'status-check', { loading: isCheckingStatus }]"
+          :disabled="isCheckingStatus"
+          title="检测账号状态"
+        >
+          <svg
+            v-if="!isCheckingStatus"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path
+              d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+            />
           </svg>
           <div v-else class="loading-spinner"></div>
         </button>
-        <button v-if="token.portal_url" @click="$emit('open-portal', token)" class="btn-action portal" title="打开Portal">
+        <button
+          v-if="token.portal_url"
+          @click="$emit('open-portal', token)"
+          class="btn-action portal"
+          title="打开Portal"
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+            <path
+              d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+            />
           </svg>
         </button>
-        <button @click="$emit('edit', token)" class="btn-action edit" title="编辑Token">
+        <button
+          @click="$emit('edit', token)"
+          class="btn-action edit"
+          title="编辑Token"
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            <path
+              d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+            />
           </svg>
         </button>
-        <button @click="deleteToken" class="btn-action delete" title="删除Token">
+        <button
+          @click="deleteToken"
+          class="btn-action delete"
+          title="删除Token"
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            <path
+              d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+            />
           </svg>
         </button>
       </div>
@@ -101,8 +189,15 @@
           <div class="modal-header">
             <h3>选择编辑器</h3>
             <button @click.stop="showEditorModal = false" class="modal-close">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+                />
               </svg>
             </button>
           </div>
@@ -110,17 +205,33 @@
             <!-- VSCode 系编辑器区域 -->
             <div class="editor-section">
               <div class="editor-options jetbrains-grid">
-                <button @click="handleEditorClick('vscode')" class="editor-option vscode-option">
+                <button
+                  @click="handleEditorClick('vscode')"
+                  class="editor-option vscode-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.vscode" alt="VS Code" width="32" height="32" />
+                    <img
+                      :src="editorIcons.vscode"
+                      alt="VS Code"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">VS Code</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('cursor')" class="editor-option cursor-option">
+                <button
+                  @click="handleEditorClick('cursor')"
+                  class="editor-option cursor-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.cursor" alt="Cursor" width="32" height="32" />
+                    <img
+                      :src="editorIcons.cursor"
+                      alt="Cursor"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">Cursor</span>
@@ -132,97 +243,193 @@
             <!-- JetBrains 系编辑器区域 -->
             <div class="editor-section">
               <div class="editor-options jetbrains-grid">
-                <button @click="handleEditorClick('idea')" class="editor-option idea-option">
+                <button
+                  @click="handleEditorClick('idea')"
+                  class="editor-option idea-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.idea" alt="IntelliJ IDEA" width="32" height="32" />
+                    <img
+                      :src="editorIcons.idea"
+                      alt="IntelliJ IDEA"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">IntelliJ IDEA</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('pycharm')" class="editor-option pycharm-option">
+                <button
+                  @click="handleEditorClick('pycharm')"
+                  class="editor-option pycharm-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.pycharm" alt="PyCharm" width="32" height="32" />
+                    <img
+                      :src="editorIcons.pycharm"
+                      alt="PyCharm"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">PyCharm</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('goland')" class="editor-option goland-option">
+                <button
+                  @click="handleEditorClick('goland')"
+                  class="editor-option goland-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.goland" alt="GoLand" width="32" height="32" />
+                    <img
+                      :src="editorIcons.goland"
+                      alt="GoLand"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">GoLand</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('rustrover')" class="editor-option rustrover-option">
+                <button
+                  @click="handleEditorClick('rustrover')"
+                  class="editor-option rustrover-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.rustrover" alt="RustRover" width="32" height="32" />
+                    <img
+                      :src="editorIcons.rustrover"
+                      alt="RustRover"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">RustRover</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('webstorm')" class="editor-option webstorm-option">
+                <button
+                  @click="handleEditorClick('webstorm')"
+                  class="editor-option webstorm-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.webstorm" alt="WebStorm" width="32" height="32" />
+                    <img
+                      :src="editorIcons.webstorm"
+                      alt="WebStorm"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">WebStorm</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('phpstorm')" class="editor-option phpstorm-option">
+                <button
+                  @click="handleEditorClick('phpstorm')"
+                  class="editor-option phpstorm-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.phpstorm" alt="PhpStorm" width="32" height="32" />
+                    <img
+                      :src="editorIcons.phpstorm"
+                      alt="PhpStorm"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">PhpStorm</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('androidstudio')" class="editor-option androidstudio-option">
+                <button
+                  @click="handleEditorClick('androidstudio')"
+                  class="editor-option androidstudio-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.androidstudio" alt="Android Studio" width="32" height="32" />
+                    <img
+                      :src="editorIcons.androidstudio"
+                      alt="Android Studio"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">Android Studio</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('clion')" class="editor-option clion-option">
+                <button
+                  @click="handleEditorClick('clion')"
+                  class="editor-option clion-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.clion" alt="CLion" width="32" height="32" />
+                    <img
+                      :src="editorIcons.clion"
+                      alt="CLion"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">CLion</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('datagrip')" class="editor-option datagrip-option">
+                <button
+                  @click="handleEditorClick('datagrip')"
+                  class="editor-option datagrip-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.datagrip" alt="DataGrip" width="32" height="32" />
+                    <img
+                      :src="editorIcons.datagrip"
+                      alt="DataGrip"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">DataGrip</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('rider')" class="editor-option rider-option">
+                <button
+                  @click="handleEditorClick('rider')"
+                  class="editor-option rider-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.rider" alt="Rider" width="32" height="32" />
+                    <img
+                      :src="editorIcons.rider"
+                      alt="Rider"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">Rider</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('rubymine')" class="editor-option rubymine-option">
+                <button
+                  @click="handleEditorClick('rubymine')"
+                  class="editor-option rubymine-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.rubymine" alt="RubyMine" width="32" height="32" />
+                    <img
+                      :src="editorIcons.rubymine"
+                      alt="RubyMine"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">RubyMine</span>
                   </div>
                 </button>
-                <button @click="handleEditorClick('aqua')" class="editor-option aqua-option">
+                <button
+                  @click="handleEditorClick('aqua')"
+                  class="editor-option aqua-option"
+                >
                   <div class="editor-icon">
-                    <img :src="editorIcons.aqua" alt="Aqua" width="32" height="32" />
+                    <img
+                      :src="editorIcons.aqua"
+                      alt="Aqua"
+                      width="32"
+                      height="32"
+                    />
                   </div>
                   <div class="editor-info">
                     <span class="editor-name">Aqua</span>
@@ -238,233 +445,236 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onUnmounted } from 'vue'
-import { invoke } from '@tauri-apps/api/core'
+import { computed, ref, onMounted, onUnmounted } from "vue";
+import { invoke } from "@tauri-apps/api/core";
 
 // 防抖函数
 function debounce(func, wait) {
-  let timeout
+  let timeout;
   return function executedFunction(...args) {
     const later = () => {
-      clearTimeout(timeout)
-      func(...args)
-    }
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-  }
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 // Props
 const props = defineProps({
   token: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 // Emits
-const emit = defineEmits(['delete', 'copy-success', 'open-portal', 'edit', 'token-updated'])
+const emit = defineEmits([
+  "delete",
+  "copy-success",
+  "open-portal",
+  "edit",
+  "token-updated",
+]);
 
 // Reactive data
-const isLoadingPortalInfo = ref(false)
-const portalInfo = ref({ data: null, error: null })
-const isCheckingStatus = ref(false)
-const isEmailHovered = ref(false)
-const showEditorModal = ref(false)
-const isModalClosing = ref(false)
+const isLoadingPortalInfo = ref(false);
+const portalInfo = ref({ data: null, error: null });
+const isCheckingStatus = ref(false);
+const isEmailHovered = ref(false);
+const showEditorModal = ref(false);
+const isModalClosing = ref(false);
 
 // 图标映射
 const editorIcons = {
-  vscode: '/icons/vscode.svg',
-  cursor: '/icons/cursor.svg',
-  idea: '/icons/idea.svg',
-  pycharm: '/icons/pycharm.svg',
-  goland: '/icons/goland.svg',
-  rustrover: '/icons/rustrover.svg',
-  webstorm: '/icons/webstorm.svg',
-  phpstorm: '/icons/phpstorm.svg',
-  clion: '/icons/clion.svg',
-  datagrip: '/icons/datagrip.svg',
-  rider: '/icons/rider.svg',
-  rubymine: '/icons/rubymine.svg',
-  aqua: '/icons/aqua.svg',
-  androidstudio: '/icons/androidstudio.svg'
-}
+  vscode: "/icons/vscode.svg",
+  cursor: "/icons/cursor.svg",
+  idea: "/icons/idea.svg",
+  pycharm: "/icons/pycharm.svg",
+  goland: "/icons/goland.svg",
+  rustrover: "/icons/rustrover.svg",
+  webstorm: "/icons/webstorm.svg",
+  phpstorm: "/icons/phpstorm.svg",
+  clion: "/icons/clion.svg",
+  datagrip: "/icons/datagrip.svg",
+  rider: "/icons/rider.svg",
+  rubymine: "/icons/rubymine.svg",
+  aqua: "/icons/aqua.svg",
+  androidstudio: "/icons/androidstudio.svg",
+};
 
 // Computed properties
 const displayUrl = computed(() => {
   try {
-    const url = new URL(props.token.tenant_url)
-    return url.hostname
+    const url = new URL(props.token.tenant_url);
+    return url.hostname;
   } catch {
-    return props.token.tenant_url
+    return props.token.tenant_url;
   }
-})
+});
 
 const maskedToken = computed(() => {
-  const token = props.token.access_token
-  if (token.length <= 20) return token
-  return token.substring(0, 10) + '...' + token.substring(token.length - 10)
-})
+  const token = props.token.access_token;
+  if (token.length <= 20) return token;
+  return token.substring(0, 10) + "..." + token.substring(token.length - 10);
+});
 
 const maskedEmail = computed(() => {
-  const email = props.token.email_note
-  if (!email || !email.includes('@')) return email
+  const email = props.token.email_note;
+  if (!email || !email.includes("@")) return email;
 
-  const [username, domain] = email.split('@')
+  const [username, domain] = email.split("@");
 
   // 如果用户名太短，直接返回原邮箱
   if (username.length <= 3) {
-    return email
+    return email;
   }
 
-  let maskedUsername
+  let maskedUsername;
   if (username.length <= 6) {
     // 短邮箱：保留前1-2个字符，其余用星号替换
-    const keepChars = username.length <= 4 ? 1 : 2
-    const hiddenCount = username.length - keepChars
-    maskedUsername = username.substring(0, keepChars) + '*'.repeat(hiddenCount)
+    const keepChars = username.length <= 4 ? 1 : 2;
+    const hiddenCount = username.length - keepChars;
+    maskedUsername = username.substring(0, keepChars) + "*".repeat(hiddenCount);
   } else {
     // 长邮箱：保留前后各2-3个字符，中间用4个星号替换
-    const frontKeep = username.length >= 8 ? 3 : 2
-    const backKeep = 2
-    maskedUsername = username.substring(0, frontKeep) + '****' + username.substring(username.length - backKeep)
+    const frontKeep = username.length >= 8 ? 3 : 2;
+    const backKeep = 2;
+    maskedUsername =
+      username.substring(0, frontKeep) +
+      "****" +
+      username.substring(username.length - backKeep);
   }
 
-  return maskedUsername + '@' + domain
-})
-
-
+  return maskedUsername + "@" + domain;
+});
 
 // Methods
 const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return date.toLocaleString('zh-CN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
-
-
-
-
+  const date = new Date(dateString);
+  return date.toLocaleString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
 
 const deleteToken = () => {
   // 直接发出删除事件，让父组件处理确认逻辑
-  emit('delete', props.token.id)
-}
+  emit("delete", props.token.id);
+};
 
 // 复制到剪贴板的通用方法
 const copyToClipboard = async (text) => {
   try {
-    await navigator.clipboard.writeText(text)
-    return true
+    await navigator.clipboard.writeText(text);
+    return true;
   } catch (error) {
     // 备用方案
-    const textArea = document.createElement('textarea')
-    textArea.value = text
-    document.body.appendChild(textArea)
-    textArea.select()
-    document.execCommand('copy')
-    document.body.removeChild(textArea)
-    return true
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(textArea);
+    return true;
   }
-}
+};
 
 // 复制Token
 const copyToken = async () => {
-  const success = await copyToClipboard(props.token.access_token)
+  const success = await copyToClipboard(props.token.access_token);
   if (success) {
-    emit('copy-success', 'Token已复制到剪贴板!', 'success')
+    emit("copy-success", "Token已复制到剪贴板!", "success");
   } else {
-    emit('copy-success', '复制Token失败', 'error')
+    emit("copy-success", "复制Token失败", "error");
   }
-}
+};
 
 // 复制租户URL
 const copyTenantUrl = async () => {
-  const success = await copyToClipboard(props.token.tenant_url)
+  const success = await copyToClipboard(props.token.tenant_url);
   if (success) {
-    emit('copy-success', '租户URL已复制到剪贴板!', 'success')
+    emit("copy-success", "租户URL已复制到剪贴板!", "success");
   } else {
-    emit('copy-success', '复制租户URL失败', 'error')
+    emit("copy-success", "复制租户URL失败", "error");
   }
-}
+};
 
 // 复制邮箱备注
 const copyEmailNote = async () => {
-  const success = await copyToClipboard(props.token.email_note)
+  const success = await copyToClipboard(props.token.email_note);
   if (success) {
-    emit('copy-success', '邮箱备注已复制到剪贴板!', 'success')
+    emit("copy-success", "邮箱备注已复制到剪贴板!", "success");
   } else {
-    emit('copy-success', '复制邮箱备注失败', 'error')
+    emit("copy-success", "复制邮箱备注失败", "error");
   }
-}
+};
 
 // 键盘事件处理
 const handleKeydown = (event) => {
-  if (event.key === 'Escape' && showEditorModal.value) {
-    showEditorModal.value = false
+  if (event.key === "Escape" && showEditorModal.value) {
+    showEditorModal.value = false;
   }
-}
+};
 
 // 打开编辑器模态框
 const openEditorModal = () => {
-  if (showEditorModal.value || isModalClosing.value) return
-  showEditorModal.value = true
-}
+  if (showEditorModal.value || isModalClosing.value) return;
+  showEditorModal.value = true;
+};
 
 // 关闭模态框
 const closeModal = (event) => {
-  if (isModalClosing.value) return
+  if (isModalClosing.value) return;
 
   // 如果事件来自模态框内部，不关闭
-  if (event && event.target.closest('.editor-modal')) {
-    return
+  if (event && event.target.closest(".editor-modal")) {
+    return;
   }
 
-  showEditorModal.value = false
-  isModalClosing.value = false
-}
+  showEditorModal.value = false;
+  isModalClosing.value = false;
+};
 
 // 生成 Cursor 协议 URL
 const getCursorProtocolUrl = () => {
   try {
-    const token = encodeURIComponent(props.token.access_token)
-    const url = encodeURIComponent(props.token.tenant_url)
-    return `cursor://Augment.vscode-augment/autoAuth?token=${token}&url=${url}`
+    const token = encodeURIComponent(props.token.access_token);
+    const url = encodeURIComponent(props.token.tenant_url);
+    return `cursor://Augment.vscode-augment/autoAuth?token=${token}&url=${url}`;
   } catch (error) {
-    console.error('Failed to generate Cursor protocol URL:', error)
-    return '#'
+    console.error("Failed to generate Cursor protocol URL:", error);
+    return "#";
   }
-}
+};
 
 // 生成 VS Code 协议 URL
 const getVSCodeProtocolUrl = () => {
   try {
-    const token = encodeURIComponent(props.token.access_token)
-    const url = encodeURIComponent(props.token.tenant_url)
-    return `vscode://Augment.vscode-augment/autoAuth?token=${token}&url=${url}`
+    const token = encodeURIComponent(props.token.access_token);
+    const url = encodeURIComponent(props.token.tenant_url);
+    return `vscode://Augment.vscode-augment/autoAuth?token=${token}&url=${url}`;
   } catch (error) {
-    console.error('Failed to generate VS Code protocol URL:', error)
-    return '#'
+    console.error("Failed to generate VS Code protocol URL:", error);
+    return "#";
   }
-}
+};
 
 // 生成 JetBrains 编辑器协议 URL
 const getJetBrainsProtocolUrl = (editorType) => {
   try {
-    const token = encodeURIComponent(props.token.access_token)
-    const url = encodeURIComponent(props.token.tenant_url)
-    return `jetbrains://${editorType}/plugin/Augment.jetbrains-augment/autoAuth?token=${token}&url=${url}`
+    const token = encodeURIComponent(props.token.access_token);
+    const url = encodeURIComponent(props.token.tenant_url);
+    return `jetbrains://${editorType}/plugin/Augment.jetbrains-augment/autoAuth?token=${token}&url=${url}`;
   } catch (error) {
-    console.error(`Failed to generate ${editorType} protocol URL:`, error)
-    return '#'
+    console.error(`Failed to generate ${editorType} protocol URL:`, error);
+    return "#";
   }
-}
+};
 
 // 为 JetBrains 编辑器创建 JSON 文件
 const createJetBrainsTokenFile = async (editorType) => {
@@ -474,339 +684,363 @@ const createJetBrainsTokenFile = async (editorType) => {
       url: props.token.tenant_url,
       token: props.token.access_token,
       timestamp: Date.now(),
-      ide: editorType
-    }
+      ide: editorType,
+    };
 
     // 调用 Tauri 后端命令创建文件
-    const result = await invoke('create_jetbrains_token_file', {
+    const result = await invoke("create_jetbrains_token_file", {
       editorType,
-      tokenData: JSON.stringify(tokenData, null, 2)
-    })
+      tokenData: JSON.stringify(tokenData, null, 2),
+    });
 
-    return { success: true, filePath: result }
+    return { success: true, filePath: result };
   } catch (error) {
-    console.error(`Failed to create ${editorType} token file:`, error)
-    return { success: false, error: error.toString() }
+    console.error(`Failed to create ${editorType} token file:`, error);
+    return { success: false, error: error.toString() };
   }
-}
+};
 
 // 处理编辑器链接点击事件
 const handleEditorClick = async (editorType) => {
   try {
     // 关闭模态框
-    showEditorModal.value = false
-    isModalClosing.value = false
+    showEditorModal.value = false;
+    isModalClosing.value = false;
 
     // 定义 JetBrains 系编辑器列表
     const jetbrainsEditors = [
-      'idea', 'pycharm', 'goland', 'rustrover', 'webstorm',
-      'phpstorm', 'androidstudio', 'clion', 'datagrip', 'rider', 'rubymine', 'aqua'
-    ]
+      "idea",
+      "pycharm",
+      "goland",
+      "rustrover",
+      "webstorm",
+      "phpstorm",
+      "androidstudio",
+      "clion",
+      "datagrip",
+      "rider",
+      "rubymine",
+      "aqua",
+    ];
 
     // 获取编辑器名称
     const getEditorName = (type) => {
       const editorNames = {
-        'cursor': 'Cursor',
-        'vscode': 'VS Code',
-        'idea': 'IntelliJ IDEA',
-        'pycharm': 'PyCharm',
-        'goland': 'GoLand',
-        'rustrover': 'RustRover',
-        'webstorm': 'WebStorm',
-        'phpstorm': 'PhpStorm',
-        'androidstudio': 'Android Studio',
-        'clion': 'CLion',
-        'datagrip': 'DataGrip',
-        'rider': 'Rider',
-        'rubymine': 'RubyMine',
-        'aqua': 'Aqua'
-      }
-      return editorNames[type] || type
-    }
+        cursor: "Cursor",
+        vscode: "VS Code",
+        idea: "IntelliJ IDEA",
+        pycharm: "PyCharm",
+        goland: "GoLand",
+        rustrover: "RustRover",
+        webstorm: "WebStorm",
+        phpstorm: "PhpStorm",
+        androidstudio: "Android Studio",
+        clion: "CLion",
+        datagrip: "DataGrip",
+        rider: "Rider",
+        rubymine: "RubyMine",
+        aqua: "Aqua",
+      };
+      return editorNames[type] || type;
+    };
 
-    const editorName = getEditorName(editorType)
+    const editorName = getEditorName(editorType);
 
     // 检查是否为 JetBrains 系编辑器
     if (jetbrainsEditors.includes(editorType)) {
       // 为 JetBrains 编辑器创建 JSON 文件
-      const result = await createJetBrainsTokenFile(editorType)
+      const result = await createJetBrainsTokenFile(editorType);
 
       if (result.success) {
-        emit('copy-success', `${editorName} Token 文件已创建`, 'success')
+        emit("copy-success", `${editorName} Token 文件已创建`, "success");
       } else {
-        emit('copy-success', `创建 ${editorName} Token 文件失败: ${result.error}`, 'error')
+        emit(
+          "copy-success",
+          `创建 ${editorName} Token 文件失败: ${result.error}`,
+          "error"
+        );
       }
     } else {
       // VSCode 系编辑器使用原有的协议 URL 方式
-      let protocolUrl
+      let protocolUrl;
 
       switch (editorType) {
-        case 'cursor':
-          protocolUrl = getCursorProtocolUrl()
-          break
-        case 'vscode':
-          protocolUrl = getVSCodeProtocolUrl()
-          break
+        case "cursor":
+          protocolUrl = getCursorProtocolUrl();
+          break;
+        case "vscode":
+          protocolUrl = getVSCodeProtocolUrl();
+          break;
         default:
-          throw new Error(`Unknown VSCode editor type: ${editorType}`)
+          throw new Error(`Unknown VSCode editor type: ${editorType}`);
       }
 
       // 使用 Tauri 命令打开编辑器
-      await invoke('open_editor_with_protocol', { protocolUrl })
-      emit('copy-success', `正在打开 ${editorName}...`, 'success')
+      await invoke("open_editor_with_protocol", { protocolUrl });
+      emit("copy-success", `正在打开 ${editorName}...`, "success");
     }
   } catch (error) {
-    console.error('Failed to handle editor click:', error)
-    emit('copy-success', '操作失败', 'error')
-    showEditorModal.value = false
-    isModalClosing.value = false
+    console.error("Failed to handle editor click:", error);
+    emit("copy-success", "操作失败", "error");
+    showEditorModal.value = false;
+    isModalClosing.value = false;
   }
-}
+};
 
 // 邮箱悬浮事件处理
 const handleEmailMouseEnter = () => {
-  isEmailHovered.value = true
-}
+  isEmailHovered.value = true;
+};
 
 const handleEmailMouseLeave = () => {
-  isEmailHovered.value = false
-}
-
-
+  isEmailHovered.value = false;
+};
 
 const extractTokenFromPortalUrl = (portalUrl) => {
   try {
-    const url = new URL(portalUrl)
-    return url.searchParams.get('token')
+    const url = new URL(portalUrl);
+    return url.searchParams.get("token");
   } catch {
-    return null
+    return null;
   }
-}
+};
 
 const loadPortalInfo = async (forceRefresh = false) => {
-  console.log('loadPortalInfo called with forceRefresh:', forceRefresh)
-  console.log('token.portal_url:', props.token.portal_url)
-  console.log('token.portal_info:', props.token.portal_info)
+  console.log("loadPortalInfo called with forceRefresh:", forceRefresh);
+  console.log("token.portal_url:", props.token.portal_url);
+  console.log("token.portal_info:", props.token.portal_info);
 
   if (!props.token.portal_url) {
-    console.log('No portal_url, returning')
-    return
+    console.log("No portal_url, returning");
+    return;
   }
 
-  const token = extractTokenFromPortalUrl(props.token.portal_url)
-  console.log('Extracted token:', token ? 'found' : 'not found')
-  if (!token) return
+  const token = extractTokenFromPortalUrl(props.token.portal_url);
+  console.log("Extracted token:", token ? "found" : "not found");
+  if (!token) return;
 
   // 优先显示本地存储的Portal信息
   if (!forceRefresh && props.token.portal_info) {
-    console.log('Using cached portal info')
+    console.log("Using cached portal info");
     portalInfo.value = {
       data: {
         credits_balance: props.token.portal_info.credits_balance,
         expiry_date: props.token.portal_info.expiry_date,
-        is_active: props.token.portal_info.is_active
+        is_active: props.token.portal_info.is_active,
       },
-      error: null
-    }
+      error: null,
+    };
   } else if (!props.token.portal_info) {
     // 如果没有本地数据，先清空错误状态
-    console.log('No cached data, clearing error state')
-    portalInfo.value = { data: null, error: null }
+    console.log("No cached data, clearing error state");
+    portalInfo.value = { data: null, error: null };
   }
 
   // 在后台获取最新信息
-  console.log('Starting background fetch')
-  isLoadingPortalInfo.value = true
+  console.log("Starting background fetch");
+  isLoadingPortalInfo.value = true;
 
   try {
     // 首先获取customer信息
-    console.log('Calling get_customer_info...')
-    const customerResponse = await invoke('get_customer_info', { token })
-    console.log('Customer response received:', customerResponse)
-    const customerData = JSON.parse(customerResponse)
-    console.log('Customer data parsed:', customerData)
+    const customerResponse = await invoke("get_customer_info", { token });
 
-    if (customerData.customer && customerData.customer.ledger_pricing_units && customerData.customer.ledger_pricing_units.length > 0) {
-      const customerId = customerData.customer.id
-      const pricingUnitId = customerData.customer.ledger_pricing_units[0].id
-      console.log('Customer ID:', customerId, 'Pricing Unit ID:', pricingUnitId)
+    const customerData = JSON.parse(customerResponse);
 
-      // 获取ledger summary
-      console.log('Calling get_ledger_summary...')
-      const ledgerResponse = await invoke('get_ledger_summary', {
+    // 提取邮箱信息并处理备注
+    if (customerData.customer?.email) {
+      const customerEmail = customerData.customer.email;
+
+      // 检查备注中是否已包含该邮箱（使用正则表达式）
+      const currentNote = props.token.email_note || "";
+      const emailRegex = new RegExp(
+        customerEmail.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+        "i"
+      );
+
+      if (!emailRegex.test(currentNote)) {
+        // 在备注最前面添加邮箱
+        const newNote = currentNote.trim()
+          ? `${customerEmail}, ${currentNote.trim()}`
+          : customerEmail;
+
+        // 更新token的email_note
+        props.token.email_note = newNote;
+
+        // 触发token更新事件，标记为有未保存更改
+        emit("token-updated");
+      }
+    }
+
+    if (
+      customerData.customer &&
+      customerData.customer.ledger_pricing_units &&
+      customerData.customer.ledger_pricing_units.length > 0
+    ) {
+      const customerId = customerData.customer.id;
+      const pricingUnitId = customerData.customer.ledger_pricing_units[0].id;
+      const ledgerResponse = await invoke("get_ledger_summary", {
         customerId,
         pricingUnitId,
-        token
-      })
-      console.log('Ledger response received:', ledgerResponse)
-      const ledgerData = JSON.parse(ledgerResponse)
-      console.log('Ledger data parsed:', ledgerData)
+        token,
+      });
+
+      const ledgerData = JSON.parse(ledgerResponse);
 
       // 处理credits_balance数据，无论credit_blocks是否为空
       if (ledgerData.credits_balance !== undefined) {
-        console.log('Credits balance found:', ledgerData.credits_balance)
-
         // 构建Portal数据对象
         const newPortalData = {
-          credits_balance: parseInt(ledgerData.credits_balance) || 0
-        }
+          credits_balance: parseInt(ledgerData.credits_balance) || 0,
+        };
 
         // 如果有credit_blocks数据，添加过期时间和状态信息
         if (ledgerData.credit_blocks && ledgerData.credit_blocks.length > 0) {
-          console.log('Credit blocks found:', ledgerData.credit_blocks.length)
-          newPortalData.expiry_date = ledgerData.credit_blocks[0].expiry_date
-          newPortalData.is_active = ledgerData.credit_blocks[0].is_active
+          newPortalData.expiry_date = ledgerData.credit_blocks[0].expiry_date;
+          newPortalData.is_active = ledgerData.credit_blocks[0].is_active;
         } else {
-          console.log('No credit blocks, but credits_balance available')
           // 当没有credit_blocks时，设置默认值
-          newPortalData.expiry_date = null
-          newPortalData.is_active = false
+          newPortalData.expiry_date = null;
+          newPortalData.is_active = false;
         }
-
-        console.log('New portal data:', newPortalData)
 
         // 更新UI显示
         portalInfo.value = {
           data: newPortalData,
-          error: null
-        }
-        console.log('UI updated with portal data')
-
+          error: null,
+        };
 
         // 更新本地token对象
         props.token.portal_info = {
           credits_balance: newPortalData.credits_balance,
           expiry_date: newPortalData.expiry_date,
-          is_active: newPortalData.is_active
-        }
-        console.log('Updated token portal_info:', props.token.portal_info)
+          is_active: newPortalData.is_active,
+        };
+        console.log("Updated token portal_info:", props.token.portal_info);
       } else {
         // 如果没有credits_balance数据且没有本地数据，静默处理
         if (!props.token.portal_info) {
-          portalInfo.value = { data: null, error: null }
+          portalInfo.value = { data: null, error: null };
         }
       }
     } else {
       // 如果没有本地数据，静默处理，不显示错误信息
       if (!props.token.portal_info) {
-        portalInfo.value = { data: null, error: null }
+        portalInfo.value = { data: null, error: null };
       }
     }
   } catch (error) {
-    console.error('Failed to load portal info:', error)
+    console.error("Failed to load portal info:", error);
     // 无论是否有本地数据，都不显示错误信息，静默处理
     if (!props.token.portal_info) {
-      portalInfo.value = { data: null, error: null }
+      portalInfo.value = { data: null, error: null };
     }
     // 如果是强制刷新，则抛出错误以便上层处理
     if (forceRefresh) {
-      throw error
+      throw error;
     }
   } finally {
-    isLoadingPortalInfo.value = false
+    isLoadingPortalInfo.value = false;
   }
-}
+};
 
 const formatExpiryDate = (dateString) => {
   try {
-    const date = new Date(dateString)
-    return date.toLocaleString('zh-CN', {
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
+    const date = new Date(dateString);
+    return date.toLocaleString("zh-CN", {
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   } catch {
-    return dateString
+    return dateString;
   }
-}
+};
 
 // 检测账号状态
 const checkAccountStatus = async () => {
-  console.log('checkAccountStatus called')
-  if (isCheckingStatus.value) return
+  console.log("checkAccountStatus called");
+  if (isCheckingStatus.value) return;
 
-  isCheckingStatus.value = true
+  isCheckingStatus.value = true;
 
   try {
     // 并行执行两个操作：账号状态检测和Portal信息获取
-    const promises = []
+    const promises = [];
 
     // 1. 账号状态检测
-    console.log('Adding account status check promise')
-    const statusCheckPromise = invoke('check_account_status', {
+    console.log("Adding account status check promise");
+    const statusCheckPromise = invoke("check_account_status", {
       token: props.token.access_token,
-      tenantUrl: props.token.tenant_url
-    })
-    promises.push(statusCheckPromise)
+      tenantUrl: props.token.tenant_url,
+    });
+    promises.push(statusCheckPromise);
 
     // 2. Portal信息获取（如果有portal_url）
-    let portalInfoPromise = null
+    let portalInfoPromise = null;
     if (props.token.portal_url) {
-      console.log('Adding portal info promise')
-      portalInfoPromise = loadPortalInfo(true) // 强制刷新
-      promises.push(portalInfoPromise)
+      console.log("Adding portal info promise");
+      portalInfoPromise = loadPortalInfo(true); // 强制刷新
+      promises.push(portalInfoPromise);
     } else {
-      console.log('No portal_url, skipping portal info fetch')
+      console.log("No portal_url, skipping portal info fetch");
     }
 
     // 等待所有操作完成
-    const results = await Promise.allSettled(promises)
+    const results = await Promise.allSettled(promises);
 
     // 处理账号状态检测结果
-    const statusResult = results[0]
-    let statusMessage = ''
-    let statusType = 'info'
+    const statusResult = results[0];
+    let statusMessage = "";
+    let statusType = "info";
 
-    if (statusResult.status === 'fulfilled') {
-      const result = statusResult.value
+    if (statusResult.status === "fulfilled") {
+      const result = statusResult.value;
       // 移除了自动保存，现在只更新内存中的数据
-      const banStatus = result.is_banned ? 'SUSPENDED' : 'ACTIVE'
+      const banStatus = result.is_banned ? "SUSPENDED" : "ACTIVE";
 
       // 更新本地token对象
-      props.token.ban_status = banStatus
+      props.token.ban_status = banStatus;
 
-      statusMessage = result.is_banned ? '账号已封禁' : '账号状态正常'
-      statusType = result.is_banned ? 'error' : 'success'
+      statusMessage = result.is_banned ? "账号已封禁" : "账号状态正常";
+      statusType = result.is_banned ? "error" : "success";
     } else {
-      console.error('Account status check failed:', statusResult.reason)
-      statusMessage = `状态检测失败: ${statusResult.reason}`
-      statusType = 'error'
+      console.error("Account status check failed:", statusResult.reason);
+      statusMessage = `状态检测失败: ${statusResult.reason}`;
+      statusType = "error";
     }
 
     // 处理Portal信息获取结果（静默更新，不在通知中显示）
     if (portalInfoPromise && results.length > 1) {
-      const portalResult = results[1]
-      if (portalResult.status === 'rejected') {
-        console.error('Portal info fetch failed:', portalResult.reason)
+      const portalResult = results[1];
+      if (portalResult.status === "rejected") {
+        console.error("Portal info fetch failed:", portalResult.reason);
         // 如果有本地数据，继续显示本地数据，不显示错误
       }
       // loadPortalInfo方法已经处理了成功和失败的情况
     }
 
     // 发送账号状态消息（不包含次数信息）
-    const finalMessage = `检测完成：${statusMessage}`
-    emit('copy-success', finalMessage, statusType)
-
+    const finalMessage = `检测完成：${statusMessage}`;
+    emit("copy-success", finalMessage, statusType);
   } catch (error) {
-    console.error('Account status check failed:', error)
-    emit('copy-success', `检测失败: ${error}`, 'error')
+    console.error("Account status check failed:", error);
+    emit("copy-success", `检测失败: ${error}`, "error");
   } finally {
-    isCheckingStatus.value = false
-    isLoadingPortalInfo.value = false
+    isCheckingStatus.value = false;
+    isLoadingPortalInfo.value = false;
   }
-}
-
+};
 
 // 移除了防抖，直接调用状态检测方法
 
 // 暴露刷新Portal信息的方法
 const refreshPortalInfo = async () => {
   if (props.token.portal_url) {
-    return await loadPortalInfo(true) // 强制刷新
+    return await loadPortalInfo(true); // 强制刷新
   }
-  return Promise.resolve()
-}
+  return Promise.resolve();
+};
 
 // 组件挂载时加载Portal信息
 onMounted(() => {
@@ -817,34 +1051,34 @@ onMounted(() => {
         data: {
           credits_balance: props.token.portal_info.credits_balance,
           expiry_date: props.token.portal_info.expiry_date,
-          is_active: props.token.portal_info.is_active
+          is_active: props.token.portal_info.is_active,
         },
-        error: null
-      }
+        error: null,
+      };
     }
     // 然后在后台刷新数据
-    loadPortalInfo(false)
+    loadPortalInfo(false);
   }
 
   // 添加键盘事件监听器
-  document.addEventListener('keydown', handleKeydown)
-})
+  document.addEventListener("keydown", handleKeydown);
+});
 
 // 组件卸载时清理事件监听器
 onUnmounted(() => {
-  document.removeEventListener('keydown', handleKeydown)
-})
+  document.removeEventListener("keydown", handleKeydown);
+});
 
 // 暴露检查账号状态的方法
 const refreshAccountStatus = async () => {
-  return await checkAccountStatus()
-}
+  return await checkAccountStatus();
+};
 
 // 暴露方法给父组件
 defineExpose({
   refreshPortalInfo,
-  refreshAccountStatus
-})
+  refreshAccountStatus,
+});
 </script>
 
 <style scoped>
@@ -1025,10 +1259,6 @@ defineExpose({
   background: #d4edda;
   font-weight: 600;
 }
-
-
-
-
 
 .actions {
   display: flex;
@@ -1218,8 +1448,6 @@ defineExpose({
   overflow-y: auto;
 }
 
-
-
 .editor-section {
   margin-bottom: 24px;
   padding-bottom: 24px;
@@ -1344,8 +1572,6 @@ defineExpose({
   color: #333;
 }
 
-
-
 /* 响应式处理 */
 @media (max-width: 768px) {
   .token-card {
@@ -1453,6 +1679,4 @@ defineExpose({
     font-size: 15px;
   }
 }
-
-
 </style>

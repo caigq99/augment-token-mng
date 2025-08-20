@@ -6,19 +6,19 @@
           <h2>生成Augment Token</h2>
           <button class="close-btn" @click="$emit('close')">×</button>
         </div>
-        
+
         <div class="modal-body">
           <!-- Step 1: Generate Authorization URL -->
           <div class="section">
             <h3>步骤 1: 生成Augment授权URL</h3>
-            <button 
-              @click="generateAuthUrl" 
+            <button
+              @click="generateAuthUrl"
               :class="['btn', 'primary', { loading: isGenerating }]"
               :disabled="isGenerating"
             >
               生成Augment授权URL
             </button>
-            
+
             <div v-if="authUrl" class="url-section">
               <p>Augment授权URL已生成:</p>
               <div class="url-input-container">
@@ -27,37 +27,58 @@
                   :value="authUrl"
                   readonly
                   ref="authUrlInput"
-                >
+                />
               </div>
               <div class="url-buttons">
                 <button @click="copyAuthUrl" class="btn secondary">复制</button>
-                <button @click="openAuthUrl" class="btn secondary" title="在系统浏览器中打开">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                <button
+                  @click="openAuthUrl"
+                  class="btn secondary"
+                  title="在系统浏览器中打开"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+                    />
                   </svg>
                   外部打开
                 </button>
-                <button @click="openAuthUrlInternal" class="btn primary" title="在内置浏览器中打开">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H5V8h9v10z"/>
+                <button
+                  @click="openAuthUrlInternal"
+                  class="btn primary"
+                  title="在内置浏览器中打开"
+                >
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H5V8h9v10z"
+                    />
                   </svg>
                   内置打开
                 </button>
               </div>
             </div>
           </div>
-
           <!-- Step 2: Enter Authorization Code -->
           <div class="section">
             <h3>步骤 2: 输入授权码</h3>
-            <textarea 
+            <textarea
               v-model="authCode"
-              placeholder="在此粘贴授权码JSON..." 
+              placeholder="在此粘贴授权码JSON..."
               rows="4"
             ></textarea>
             <div class="button-container">
-              <button 
-                @click="getAccessToken" 
+              <button
+                @click="getAccessToken"
                 :class="['btn', 'primary', { loading: isGettingToken }]"
                 :disabled="!canGetToken || isGettingToken"
               >
@@ -73,25 +94,62 @@
               <div class="result-container">
                 <label>访问令牌:</label>
                 <div class="token-container">
-                  <input 
-                    type="text" 
-                    :value="tokenResult.access_token" 
+                  <input
+                    type="text"
+                    :value="tokenResult.access_token"
                     readonly
                     ref="accessTokenInput"
-                  >
-                  <button @click="copyAccessToken" class="btn secondary">复制</button>
+                  />
+                  <button @click="copyAccessToken" class="btn secondary">
+                    复制
+                  </button>
                 </div>
               </div>
               <div class="result-container">
                 <label>租户URL:</label>
                 <div class="token-container">
-                  <input 
-                    type="text" 
-                    :value="tokenResult.tenant_url" 
+                  <input
+                    type="text"
+                    :value="tokenResult.tenant_url"
                     readonly
                     ref="tenantUrlInput"
+                  />
+                  <button @click="copyTenantUrl" class="btn secondary">
+                    复制
+                  </button>
+                </div>
+              </div>
+
+              <!-- Account URL Section -->
+              <div class="result-container">
+                <label>个人账号地址:</label>
+                <div class="token-container">
+                  <input
+                    type="text"
+                    value="https://app.augmentcode.com/account"
+                    readonly
+                    ref="accountUrlInput"
+                  />
+                  <button @click="copyAccountUrl" class="btn secondary">
+                    复制
+                  </button>
+                  <button
+                    @click="openAccountUrl"
+                    class="btn primary"
+                    title="在浏览器中打开个人账号"
                   >
-                  <button @click="copyTenantUrl" class="btn secondary">复制</button>
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+                      />
+                    </svg>
+                    访问账号
+                  </button>
                 </div>
               </div>
 
@@ -104,7 +162,7 @@
                     v-model="portalUrl"
                     placeholder="请输入 Portal 地址（可选）"
                     class="field-input"
-                  >
+                  />
                 </div>
                 <div class="field-container">
                   <label>邮箱备注:</label>
@@ -113,168 +171,190 @@
                     v-model="emailNote"
                     placeholder="请输入邮箱相关备注（可选）"
                     class="field-input"
-                  >
+                  />
                 </div>
               </div>
 
               <div class="button-container">
-                <button @click="saveAndClose" class="btn success">保存并关闭</button>
+                <button @click="saveAndClose" class="btn success">
+                  保存并关闭
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { invoke } from '@tauri-apps/api/core'
+import { ref, computed } from "vue";
+import { invoke } from "@tauri-apps/api/core";
 
 // Emits
-const emit = defineEmits(['close', 'token-saved', 'show-status', 'save-token'])
+const emit = defineEmits(["close", "token-saved", "show-status", "save-token"]);
 
 // Reactive data
-const authUrl = ref('')
-const authCode = ref('')
-const tokenResult = ref(null)
-const isGenerating = ref(false)
-const isGettingToken = ref(false)
-const portalUrl = ref('')
-const emailNote = ref('')
+const authUrl = ref("");
+const authCode = ref("");
+const tokenResult = ref(null);
+const isGenerating = ref(false);
+const isGettingToken = ref(false);
+const portalUrl = ref("");
+const emailNote = ref("");
 
 // Template refs
-const authUrlInput = ref(null)
-const accessTokenInput = ref(null)
-const tenantUrlInput = ref(null)
+const authUrlInput = ref(null);
+const accessTokenInput = ref(null);
+const tenantUrlInput = ref(null);
+const accountUrlInput = ref(null);
 
 // Computed properties
 const canGetToken = computed(() => {
-  return authUrl.value && authCode.value.trim().length > 0
-})
+  return authUrl.value && authCode.value.trim().length > 0;
+});
 
 // Methods
-const showStatus = (message, type = 'info') => {
-  emit('show-status', message, type)
-}
+const showStatus = (message, type = "info") => {
+  emit("show-status", message, type);
+};
 
 const copyToClipboard = async (text) => {
   try {
-    await navigator.clipboard.writeText(text)
-    return true
+    await navigator.clipboard.writeText(text);
+    return true;
   } catch (err) {
     // Fallback for older browsers
-    const textArea = document.createElement('textarea')
-    textArea.value = text
-    document.body.appendChild(textArea)
-    textArea.select()
-    const success = document.execCommand('copy')
-    document.body.removeChild(textArea)
-    return success
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    const success = document.execCommand("copy");
+    document.body.removeChild(textArea);
+    return success;
   }
-}
+};
 
 const generateAuthUrl = async () => {
-  isGenerating.value = true
-  showStatus('正在生成Augment授权URL...', 'info')
-  
+  isGenerating.value = true;
+  showStatus("正在生成Augment授权URL...", "info");
+
   try {
-    const url = await invoke('generate_augment_auth_url')
-    authUrl.value = url
-    showStatus('Augment授权URL生成成功!', 'success')
+    const url = await invoke("generate_augment_auth_url");
+    authUrl.value = url;
+    showStatus("Augment授权URL生成成功!", "success");
   } catch (error) {
-    showStatus(`错误: ${error}`, 'error')
+    showStatus(`错误: ${error}`, "error");
   } finally {
-    isGenerating.value = false
+    isGenerating.value = false;
   }
-}
+};
 
 const copyAuthUrl = async () => {
-  const success = await copyToClipboard(authUrl.value)
+  const success = await copyToClipboard(authUrl.value);
   showStatus(
-    success ? 'URL已复制到剪贴板!' : '复制URL失败',
-    success ? 'success' : 'error'
-  )
-}
+    success ? "URL已复制到剪贴板!" : "复制URL失败",
+    success ? "success" : "error"
+  );
+};
 
 const openAuthUrl = async () => {
   try {
-    await invoke('open_url', { url: authUrl.value })
-    showStatus('正在浏览器中打开授权URL...', 'info')
+    await invoke("open_url", { url: authUrl.value });
+    showStatus("正在浏览器中打开授权URL...", "info");
   } catch (error) {
-    showStatus(`打开URL错误: ${error}`, 'error')
+    showStatus(`打开URL错误: ${error}`, "error");
   }
-}
+};
 
 const openAuthUrlInternal = async () => {
   try {
-    const windowLabel = await invoke('open_internal_browser', {
+    const windowLabel = await invoke("open_internal_browser", {
       url: authUrl.value,
-      title: 'Augment OAuth 授权'
-    })
-    showStatus('已在内置浏览器中打开授权URL', 'info')
+      title: "Augment OAuth 授权",
+    });
+    showStatus("已在内置浏览器中打开授权URL", "info");
   } catch (error) {
-    showStatus(`打开内置浏览器失败: ${error}`, 'error')
+    showStatus(`打开内置浏览器失败: ${error}`, "error");
   }
-}
+};
 
 const getAccessToken = async () => {
   if (!authCode.value.trim()) {
-    showStatus('请输入授权码', 'error')
-    return
+    showStatus("请输入授权码", "error");
+    return;
   }
-  
-  isGettingToken.value = true
-  showStatus('正在获取Augment访问令牌...', 'info')
-  
+
+  isGettingToken.value = true;
+  showStatus("正在获取Augment访问令牌...", "info");
+
   try {
-    const result = await invoke('get_augment_token', { code: authCode.value.trim() })
-    tokenResult.value = result
-    showStatus('Augment访问令牌获取成功!', 'success')
+    const result = await invoke("get_augment_token", {
+      code: authCode.value.trim(),
+    });
+    tokenResult.value = result;
+    showStatus("Augment访问令牌获取成功!", "success");
   } catch (error) {
-    showStatus(`错误: ${error}`, 'error')
+    showStatus(`错误: ${error}`, "error");
   } finally {
-    isGettingToken.value = false
+    isGettingToken.value = false;
   }
-}
+};
 
 const copyAccessToken = async () => {
-  const success = await copyToClipboard(tokenResult.value.access_token)
+  const success = await copyToClipboard(tokenResult.value.access_token);
   showStatus(
-    success ? '访问令牌已复制到剪贴板!' : '复制令牌失败',
-    success ? 'success' : 'error'
-  )
-}
+    success ? "访问令牌已复制到剪贴板!" : "复制令牌失败",
+    success ? "success" : "error"
+  );
+};
 
 const copyTenantUrl = async () => {
-  const success = await copyToClipboard(tokenResult.value.tenant_url)
+  const success = await copyToClipboard(tokenResult.value.tenant_url);
   showStatus(
-    success ? '租户URL已复制到剪贴板!' : '复制URL失败',
-    success ? 'success' : 'error'
-  )
-}
+    success ? "租户URL已复制到剪贴板!" : "复制URL失败",
+    success ? "success" : "error"
+  );
+};
+
+const copyAccountUrl = async () => {
+  const accountUrl = "https://app.augmentcode.com/account";
+  const success = await copyToClipboard(accountUrl);
+  showStatus(
+    success ? "个人账号地址已复制到剪贴板!" : "复制地址失败",
+    success ? "success" : "error"
+  );
+};
+
+const openAccountUrl = async () => {
+  const accountUrl = "https://app.augmentcode.com/account";
+  try {
+    await invoke("open_url", { url: accountUrl });
+    showStatus("正在浏览器中打开个人账号页面...", "info");
+  } catch (error) {
+    showStatus(`打开个人账号页面失败: ${error}`, "error");
+  }
+};
 
 const saveAndClose = async () => {
   try {
     // 通知父组件保存 token 到内存
-    emit('save-token', {
+    emit("save-token", {
       tenantUrl: tokenResult.value.tenant_url,
       accessToken: tokenResult.value.access_token,
       portalUrl: portalUrl.value.trim() || null,
-      emailNote: emailNote.value.trim() || null
-    })
-    showStatus('Token已添加到内存，请手动保存', 'success')
-    emit('token-saved')
+      emailNote: emailNote.value.trim() || null,
+    });
+    showStatus("Token已添加到内存，请手动保存", "success");
+    emit("token-saved");
     setTimeout(() => {
-      emit('close')
-    }, 1000)
+      emit("close");
+    }, 1000);
   } catch (error) {
-    showStatus(`保存失败: ${error}`, 'error')
+    showStatus(`保存失败: ${error}`, "error");
   }
-}
+};
 
 // Initialize
 // showStatus('准备生成OAuth令牌', 'info')
@@ -395,7 +475,7 @@ const saveAndClose = async () => {
 }
 
 .btn.loading::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 16px;
   height: 16px;
@@ -407,11 +487,16 @@ const saveAndClose = async () => {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.url-section, .token-section {
+.url-section,
+.token-section {
   margin-top: 15px;
   padding: 0;
   background: transparent;
@@ -419,7 +504,8 @@ const saveAndClose = async () => {
   text-align: left;
 }
 
-.url-section p, .token-section p {
+.url-section p,
+.token-section p {
   margin: 0 0 10px 0;
   text-align: left;
   font-weight: 500;
@@ -537,6 +623,4 @@ textarea {
 .button-container {
   margin-top: 15px;
 }
-
-
 </style>
